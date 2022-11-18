@@ -6,10 +6,9 @@ const books = require("./book-data");
 
 /**
  * @swagger
- * /books:
+ * /gins:
  *  get:
- *    summary: Retrieve a list of JSONPlaceholder users
- *    description: Retrieve a list of users from JSONPlaceholder. Can be used to populate a list of fake users when prototyping or testing an API.
+ *    summary: Retrieve a list of Gins
  *    responses:
  *      200:
  *        description: A list of users.
@@ -32,35 +31,7 @@ router.get("/:id", function (req, res) {
   book ? res.status(200).json(book) : res.sendStatus(404);
 });
 
-/**
- * @swagger
- * /books:
- *  post:
- *    summary: Retrieve a list of JSONPlaceholder users
- *    parameters:
- *      - name: title
- *        in: body
- *        description: Titel
- *        schema:
- *          type: string
- *      - name: author
- *        in: body
- *        description: Author
- *        schema:
- *          type: string
- *      - name: finished
- *        in: body
- *        description: Finished
- *        schema:
- *          type: boolean
- *  responses:
- *    "200":
- *      description: The created book.
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/User'
- */
+
 router.post("/", function (req, res) {
   const { title, author, finished } = req.body;
   console.log(req.body)
