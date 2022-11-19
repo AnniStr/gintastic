@@ -1,40 +1,26 @@
 const assert = require("assert");
 const mysql = require('mysql');
 
-let _db;
+let con;
 
 function initDb(callback) {
-    if (_db) {
-        console.warn("Trying to init DB again!");
-        return callback(null, _db);
-    }
-
-    mysql.createConnection({
+    console.log("Connecting to DB...")
+    new_con = mysql.createConnection({
         host: "localhost",
         user: "root",
         password: "7YkECdk=dhhk",
         database: "gintasticDB"
-      }, connected);
-
-    function connected(err, db) {
-        
-        con.connect(function(err) {
-            if (err) throw err;
-            console.log("Connected!");
-        });
-
-        if (err) {
-            return callback(err);
-        }
-        console.log("DB initialized");
-        _db = db;
-        return callback(null, _db);
-    }
+    });
+    new_con.connect(function(err) {
+        if (err) throw err;
+        con = new_con;
+        callback;
+    });
 }
 
 function getDb() {
-    assert.ok(_db, "Db has not been initialized. Please called init first.");
-    return _db;
+    assert.ok(con, "Db has not been initialized. Please called init first.");
+    return con;
 }
 
 module.exports = {
