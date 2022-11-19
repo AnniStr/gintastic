@@ -3,7 +3,7 @@ const router = express.Router();
 const getDb = require("../db").getDb;
 
 router.get('/', (req, res) => {
-    let con = getDb();
+    const con = getDb();
     con.query("SELECT * FROM gins", function (err, result, fields) {
         if (err) throw err;
         res.send(result)
@@ -11,10 +11,10 @@ router.get('/', (req, res) => {
 })
 
 router.get("/:id", function (req, res) {
-    let con = getDb();
-    con.query("SELECT * FROM gins WHERE id = '"+req.params.ginID+"'", function (err, result, fields) {
+    const con = getDb();
+    con.query("SELECT * FROM gins WHERE id = '"+req.params.id+"'", function (err, result, fields) {
         if (err) throw err;
-        return result;
+        res.send(result)
     });
 });
 
