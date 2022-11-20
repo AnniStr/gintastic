@@ -20,4 +20,18 @@
  *          type: string
  *          format: date
  *          description: date
+ *    Gin:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: integer
+ *        name:
+ *          type: string
+ *          description: The gin's name.
+ *        type:
+ *          type: string
+ *          description: Type of the gin.
+ *        alcohole:
+ *          type: integer
+ *          description: Alcohole percentage of the gin.
  */

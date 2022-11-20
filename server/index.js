@@ -3,10 +3,9 @@ const bodyParser = require("body-parser");
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const PORT = process.env.PORT || 3001;
+var cors = require('cors');
 const app = express();
-const initDb = require("./db").initDb;
-
-let con;
+const initDb = require("./services/db").initDb;
 
 ////////////////////////////////////////////////////////////////
 // SERVER
@@ -16,31 +15,9 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+app.use(cors());
 app.use("/books", require("./routes/books"));
 app.use("/gins", require("./routes/gins"));
-
-initDb(
-  app.listen(PORT, ()=>{
-    console.log("Database connection is READY and "
-          + "Server is listening on port", PORT);
-  })
-);
-
-////////////////////////////////////////////////////////////////
-// DATABASE
-////////////////////////////////////////////////////////////////
-
-// var con = mysql.createConnection({
-//     host: "localhost",
-//     user: "root",
-//     password: "7YkECdk=dhhk",
-//     database: "gintasticDB"
-//   });
-  
-// con.connect(function(err) {
-//     if (err) throw err;
-//     console.log("Connected!");
-// });
 
 ////////////////////////////////////////////////////////////////
 // SWAGGER
@@ -64,6 +41,12 @@ initDb(
         description: 'Development server',
       },
     ],
+    tags: [
+      {
+        name: "gins",
+        description: "Operations about publicly available gins"
+      },
+    ]
   };
   
   const options = {
@@ -87,11 +70,21 @@ initDb(
 ////////////////////////////////////////////////////////////////
 // HELPERS
 ////////////////////////////////////////////////////////////////
-{
-  app.use(bodyParser.json());
-  app.use(
-    bodyParser.urlencoded({
-      extended: true,
-    })
-  );
-}
+
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+
+////////////////////////////////////////////////////////////////
+// START SERVER
+////////////////////////////////////////////////////////////////
+
+initDb(
+  app.listen(PORT, ()=>{
+    console.log("Database connection is READY and "
+          + "Server is listening on port", PORT);
+  })
+);
