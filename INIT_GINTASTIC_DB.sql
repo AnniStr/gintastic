@@ -3,14 +3,15 @@ CREATE DATABASE gintasticDB;
 USE gintasticDB;
 
 CREATE TABLE gins (
-  id INT PRIMARY KEY NOT NULL,
+  id VARCHAR(255) PRIMARY KEY NOT NULL,
   name VARCHAR(255) NOT NULL,
   type VARCHAR(255),
   alcohol_content FLOAT(3,1),
   origin_country VARCHAR(255),
   origin_city VARCHAR(255),
   botanicals VARCHAR(255),
-  description VARCHAR(255),
+  main_notes VARCHAR(255),
+  description TEXT,
   is_public BOOLEAN NOT NULL,
   is_tipp BOOLEAN NOT NULL
 );
@@ -31,7 +32,7 @@ CREATE TABLE friends (
 
 CREATE TABLE tasting_notes (
   id INT PRIMARY KEY NOT NULL,
-  gin_id INT NOT NULL,
+  gin_id VARCHAR(255) NOT NULL,
   user_id INT NOT NULL,
   nosing VARCHAR(255),
   tasting VARCHAR(255),
@@ -48,7 +49,7 @@ CREATE TABLE tags (
 );
 
 CREATE TABLE gin_tags_lookup (
-  gin_id INT NOT NULL,
+  gin_id VARCHAR(255) NOT NULL,
   tag_id INT NOT NULL,
   FOREIGN KEY (gin_id) REFERENCES gins(id),
   FOREIGN KEY (tag_id) REFERENCES tags(id),
@@ -56,7 +57,7 @@ CREATE TABLE gin_tags_lookup (
 );
 
 CREATE TABLE proposed_gins (
-  gin_id INT NOT NULL,
+  gin_id VARCHAR(255) NOT NULL,
   tasting_notes_id INT NOT NULL,
   FOREIGN KEY (gin_id) REFERENCES gins(id),
   FOREIGN KEY (tasting_notes_id) REFERENCES tasting_notes(id),
@@ -70,7 +71,7 @@ CREATE TABLE gin_tastings (
   event_date_start DATE,
   event_date_end DATE,
   event_location VARCHAR(255),
-  event_costs int, 	
+  event_costs int,  
   FOREIGN KEY (creator) REFERENCES users(id)
 );
 
@@ -85,7 +86,7 @@ CREATE TABLE gin_tastings_participants (
 CREATE TABLE gin_tasting_gins (
   id INT PRIMARY KEY NOT NULL,
   gin_tasting_id INT NOT NULL,
-  gin_id INT NOT NULL,
+  gin_id VARCHAR(255) NOT NULL,
   FOREIGN KEY (gin_tasting_id) REFERENCES gin_tastings(id),
   FOREIGN KEY (gin_id) REFERENCES gins(id),
   CONSTRAINT unique_gin_tasting_gins UNIQUE (gin_tasting_id,gin_id)
