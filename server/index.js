@@ -11,7 +11,7 @@ const swaggerUi = require("swagger-ui-express");
 const config = require("./config");
 
 ////////////////////////////////////////////////////////////////
-// SERVER
+// SERVER SETUP
 ////////////////////////////////////////////////////////////////
 const app = express();
 
@@ -42,14 +42,6 @@ app.get('/', (req, res) => {
 // ROUTES requires
 app.use("/gins", require("./routes/gins"));
 
-
-initDb(
-  server.listen(config.app.port, ()=>{
-    console.log("Database connection is READY and "
-          + "Server is listening on port", config.app.port);
-  })
-);
-
 ////////////////////////////////////////////////////////////////
 // SWAGGER
 ////////////////////////////////////////////////////////////////
@@ -68,7 +60,7 @@ initDb(
     },
     servers: [
       {
-        url: 'http://localhost:3001',
+        url: 'https://localhost:3001',
         description: 'Development server',
       },
     ],
@@ -98,3 +90,14 @@ initDb(
     res.send(specs)
   });
 }
+
+////////////////////////////////////////////////////////////////
+// START SERVER
+////////////////////////////////////////////////////////////////
+
+initDb(
+  server.listen(config.app.port, ()=>{
+    console.log("Database connection is READY and "
+          + "Server is listening on port", config.app.port);
+  })
+);
