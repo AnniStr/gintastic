@@ -1,23 +1,52 @@
+// SERVER requires
 const express = require("express");
-const bodyParser = require("body-parser");
+var cors = require('cors');
+const fs = require('fs');
+const https = require('https');
+const { auth } = require('express-openid-connect');
+const initDb = require("./services/db").initDb;
+// SWAGGER requires
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const PORT = process.env.PORT || 3001;
-var cors = require('cors');
-const app = express();
-const initDb = require("./services/db").initDb;
+const config = require("./config");
 
 ////////////////////////////////////////////////////////////////
 // SERVER
 ////////////////////////////////////////////////////////////////
+const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+// Get self signed certificate for https
+const key = fs.readFileSync('./key.pem');
+const cert = fs.readFileSync('./cert.pem');
+const server = https.createServer({key: key, cert: cert }, app);
 
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config.auth0.config));
+
+// use CORS module
 app.use(cors());
-app.use("/books", require("./routes/books"));
+
+// parse requests of content-type - application/json
+app.use(express.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// req.isAuthenticated is provided from the auth router
+app.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+});
+
+// ROUTES requires
 app.use("/gins", require("./routes/gins"));
+app.use("/login", require("./routes/login"));
+
+initDb(
+  server.listen(config.app.port, ()=>{
+    console.log("Database connection is READY and "
+          + "Server is listening on port", config.app.port);
+  })
+);
 
 ////////////////////////////////////////////////////////////////
 // SWAGGER
@@ -67,24 +96,3 @@ app.use("/gins", require("./routes/gins"));
     res.send(specs)
   });
 }
-////////////////////////////////////////////////////////////////
-// HELPERS
-////////////////////////////////////////////////////////////////
-
-// parse requests of content-type - application/json
-app.use(express.json());
-
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-
-
-////////////////////////////////////////////////////////////////
-// START SERVER
-////////////////////////////////////////////////////////////////
-
-initDb(
-  app.listen(PORT, ()=>{
-    console.log("Database connection is READY and "
-          + "Server is listening on port", PORT);
-  })
-);
