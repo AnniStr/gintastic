@@ -31,8 +31,8 @@ app.use("/gins", require("./routes/gins"));
       description:
         "Web App for everything arround Gin. API Documented with Swagger",
       contact: {
-        name: "Gin-Perium.de",
-        url: "https://www.gin-perium.de"
+        name: "GinTastic.gin",
+        url: "https://www.gin-tastic.gin"
       },
     },
     servers: [
