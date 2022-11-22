@@ -22,7 +22,7 @@ CREATE TABLE users (
   users VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE friends (
+CREATE TABLE friendship (
   user_id1 INT NOT NULL,
   user_id2 INT NOT NULL,
   FOREIGN KEY (user_id1) REFERENCES users(id),

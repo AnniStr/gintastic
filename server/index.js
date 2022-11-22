@@ -9,6 +9,7 @@ const initDb = require("./services/db").initDb;
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const config = require("./config");
+var path = require('path');
 
 ////////////////////////////////////////////////////////////////
 // SERVER SETUP
@@ -16,8 +17,8 @@ const config = require("./config");
 const app = express();
 
 // Get self signed certificate for https
-const key = fs.readFileSync('./key.pem');
-const cert = fs.readFileSync('./cert.pem');
+const key = fs.readFileSync(path.resolve('server/key.pem'));
+const cert = fs.readFileSync(path.resolve('server/cert.pem'));
 const server = https.createServer({key: key, cert: cert }, app);
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
@@ -98,6 +99,6 @@ app.use("/gins", require("./routes/gins"));
 initDb(
   server.listen(config.app.port, ()=>{
     console.log("Database connection is READY and "
-          + "Server is listening on port", config.app.port);
+      + "Server is listening on port", config.app.port);
   })
 );

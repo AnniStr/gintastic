@@ -20,11 +20,11 @@ const getDb = require("../services/db").getDb;
  *                $ref: '#/components/schemas/Gin'
  */
 router.get('/', (req, res) => {
-    const con = getDb();
-    con.query("SELECT * FROM gins", function (err, result, fields) {
-        if (err) throw err;
-        res.send(result)
-    });
+  const con = getDb();
+  con.query("SELECT * FROM gins", function (err, result, fields) {
+    if (err) throw err;
+    res.send(result)
+  });
 })
 
 /**
@@ -38,7 +38,7 @@ router.get('/', (req, res) => {
  *        in: path
  *        required: true
  *        schema:
- *          type: integer
+ *          type: string
  *    responses:
  *      200:
  *        description: A list of gins.
@@ -50,17 +50,17 @@ router.get('/', (req, res) => {
  *                $ref: '#/components/schemas/Gin'
  */
 router.get("/:id", function (req, res) {
-    const con = getDb();
-    console.log(req.params.id);
-    con.query("SELECT * FROM gins WHERE id = '"+req.params.id+"'", function (err, result, fields) {
-        if (err) {
-            console.log(err);
-            res.sendStatus(404);
-            throw err;
-        }
-        console.log(result);
-        res.send(result);
-    });
+  const con = getDb();
+  console.log(req.params.id);
+  con.query("SELECT * FROM gins WHERE id = '"+req.params.id+"'", function (err, result, fields) {
+    if (err) {
+      console.log(err);
+      res.sendStatus(404);
+      throw err;
+    }
+    console.log(result);
+    res.send(result);
+  });
 });
 
 module.exports = router;
