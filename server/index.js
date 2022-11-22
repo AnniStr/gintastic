@@ -33,13 +33,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // req.isAuthenticated is provided from the auth router
+app.use("/login", require("./routes/login"));
+
 app.get('/', (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+  res.send(req.oidc.isAuthenticated() ? 'Home Screen | User: Logged in' : 'Home Screen | User: Logged out');
 });
 
 // ROUTES requires
 app.use("/gins", require("./routes/gins"));
-app.use("/login", require("./routes/login"));
+
 
 initDb(
   server.listen(config.app.port, ()=>{
