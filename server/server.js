@@ -4,7 +4,6 @@ var cors = require('cors');
 const fs = require('fs');
 const https = require('https');
 const { auth } = require('express-openid-connect');
-const initDb = require("./services/db").initDb;
 // SWAGGER requires
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
@@ -96,9 +95,4 @@ app.use("/gins", require("./routes/gins"));
 // START SERVER
 ////////////////////////////////////////////////////////////////
 
-initDb(
-  server.listen(config.app.port, ()=>{
-    console.log("Database connection is READY and "
-      + "Server is listening on port", config.app.port);
-  })
-);
+server.listen(config.app.port)

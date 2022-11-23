@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const getDb = require("../services/db").getDb;
+const { Gin } = require("../models/gin.model");
 
 /**
  * @swagger
@@ -19,12 +19,13 @@ const getDb = require("../services/db").getDb;
  *              items:
  *                $ref: '#/components/schemas/Gin'
  */
-router.get('/', (req, res) => {
-  const con = getDb();
-  con.query("SELECT * FROM gins", function (err, result, fields) {
-    if (err) throw err;
-    res.send(result)
-  });
+router.get('/', async (req, res) => {
+	allGins = await Gin.findAll()
+	.catch((error) => {
+		console.error('ERROR GET:/gins', error);
+		return(error);
+	});
+	res.send(allGins);
 })
 
 /**
@@ -49,18 +50,63 @@ router.get('/', (req, res) => {
  *              items:
  *                $ref: '#/components/schemas/Gin'
  */
-router.get("/:id", function (req, res) {
-  const con = getDb();
-  console.log(req.params.id);
-  con.query("SELECT * FROM gins WHERE id = '"+req.params.id+"'", function (err, result, fields) {
-    if (err) {
-      console.log(err);
-      res.sendStatus(404);
-      throw err;
-    }
-    console.log(result);
-    res.send(result);
-  });
+router.get("/:id", async function (req, res) {
+	currentGin = await Gin.findOne({
+	where: {
+		id : req.params.id
+	}
+	}).catch((error) => {
+		console.error('ERROR GET:/gins/:id', error);
+		return(error);
+	});
+	res.send(currentGin);
+});
+
+/**
+ * @swagger
+ * /gins:
+ *  post:
+ *    tags:
+ *      - gins
+ *    summary: Add a new gin
+ *    requestBody:
+ *      description: Optional description in *Markdown*
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/Gin'
+ *        text/plain:
+ *          schema:
+ *            type: string
+ *    responses:
+ *      '201':
+ *        description: Created
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/Gin'
+ */
+router.post("/", async function (req, res) {
+	const newGin = await Gin.create({
+		id: req.body.id,
+		name: req.body.name,
+		type: req.body.type,
+		alcohol_content: req.body.alcohol_content,
+		origin_country: req.body.origin_country,
+		origin_city: req.body.origin_city,
+		botanicals: req.body.botanicals,
+		main_notes: req.body.main_notes,
+		description: req.body.description,
+		is_public: req.body.is_public,
+		is_tipp: req.body.is_tipp
+	}).catch((error) => {
+		console.error('ERROR POST:/gins', error);
+		return(error);
+	});
+	res.send(newGin);
 });
 
 module.exports = router;

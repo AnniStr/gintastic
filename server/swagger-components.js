@@ -6,7 +6,7 @@
  *      type: object
  *      properties:
  *        id:
- *          type: integer
+ *          type: string
  *        name:
  *          type: string
  *          description: The gin's name.
@@ -14,7 +14,10 @@
  *          type: string
  *          description: Type of the gin.
  *        alcohol_content:
- *          type: float
+ *          type: number
+ *          format: float
+ *          minLength: 3
+ *          maxLength: 3
  *          description: Alcohole percentage of the gin.
  *        origin_country:
  *          type: string
@@ -26,7 +29,7 @@
  *          type: string
  *          description: Botanicals of the gin.
  *        main_notes:
- *          type: array
+ *          type: string
  *          items:
  *            type: string
  *          description: Main notes of the gin.
