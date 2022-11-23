@@ -2,24 +2,6 @@
  * @swagger
  * components:
  *  schemas:
- *    User:
- *      type: object
- *      properties:
- *        id:
- *          type: integer
- *        title:
- *          type: string
- *          description: The user's name.
- *        author:
- *          type: string
- *          description: The user's name.
- *        finished:
- *          type: boolean
- *          description: The user's name.
- *        createdAt:
- *          type: string
- *          format: date
- *          description: date
  *    Gin:
  *      type: object
  *      properties:
@@ -31,7 +13,30 @@
  *        type:
  *          type: string
  *          description: Type of the gin.
- *        alcohole:
- *          type: integer
+ *        alcohol_content:
+ *          type: float
  *          description: Alcohole percentage of the gin.
+ *        origin_country:
+ *          type: string
+ *          description: origin country of the gin.
+ *        origin_city:
+ *          type: string
+ *          description: origin city of the gin.
+ *        botanicals:
+ *          type: string
+ *          description: Botanicals of the gin.
+ *        main_notes:
+ *          type: array
+ *          items:
+ *            type: string
+ *          description: Main notes of the gin.
+ *        description:
+ *          type: string
+ *          description: Description or story of the gin.
+ *        is_public:
+ *          type: boolean
+ *          description: True if the gin is/should be shown in the public list.
+ *        is_tipp:
+ *          type: boolean
+ *          description: True if the admins marked the gin as tipp.
  */
